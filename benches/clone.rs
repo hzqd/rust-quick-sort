@@ -1,6 +1,6 @@
-use bencher::*;
 #[macro_use]
 extern crate lazy_static;
+use bencher::*;
 use my_ext::kt_ext::*;
 use rand::{thread_rng, Rng};
 use rayon::prelude::*;
