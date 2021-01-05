@@ -50,6 +50,16 @@ pub trait KtStd {
 
 impl<T> KtStd for T {}
 
+trait FnOnceExt<P1, P2, R> {
+    fn partial2(self, p2: P2) -> Box<dyn FnOnce(P1) -> R>;
+}
+
+impl<P1, P2: 'static, R, F> FnOnceExt<P1, P2, R> for F where F: FnOnce(P1, P2) -> R + 'static {
+    fn partial2(self, p2: P2) -> Box<dyn FnOnce(P1) -> R> {
+        Box::new(move |p1| self(p1, p2))
+    }
+}
+
 pub trait IterExt<T> {
     fn on_each(self, f: impl Fn(&mut T)) -> Self;
     fn thertation(self, predicate1: impl Fn(&T) -> bool, predicate2: impl Fn(&T) -> bool) -> (Vec<T>, Vec<T>, Vec<T>);
